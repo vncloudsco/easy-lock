@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PHP Easy-Lock Documentation</title>
+        <!-- <link href="assets/css/bootstrap.min.css" rel="stylesheet"> -->
+        <link href="assets/css/bootstrap-theme.css" rel="stylesheet">
+        <link href="assets/css/prettify.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+         <![endif]-->
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Easy-Lock Documentation</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse navbar-light" id="navbarColor03">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Getting Started</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="func.html">Functionality</a></li>
+                    <li class="nav-item"><a class="nav-link" href="skins.html">Skins</a></li>
+                    <li class="nav-item"><a class="nav-link" href="examples.html">Examples</a></li>
+                </ul>
+            </div>
+        </div>
+        </nav>
+
+        <div class="jumbotron">
+            <div class="container">
+                <div class="data pull-right">
+                    <h1>1. Advanced use</h1>
+                    <p>The function has 3 parameters, where only 1 is required. The first one is a string, the second is an int, and the third is an array with the advanced options.</p>
+                    <h2>Simple example</h2>
+<pre class="prettyprint linenums lang-php">
+&#x3C;?php
+    include&#x27;easy-lock.php&#x27;;
+    $options = array();
+    lock(&#x22;1234&#x22;, 6, $options);
+?&#x3E;
+</pre>
+                    <p>This code will generate a lock screen with the password <span class="text-danger clsn">1234</span>, the skin with the ID <span class="text-danger clsn">6</span> and the options in the array <span class="text-danger clsn">$options</span>.</p>
+                    <pre class="prettyprint linenums lang-php">lock(&#x22;1234&#x22;, 6, $options);</pre>
+                    <p>1. The first parameter (<span class="text-danger clsn">"1234"</span> - required) must be a string with any lengh. It represents the password(the direct, clean password, or the sha512 encoded password if the sha512 mode is enabled) for locking th page.</p>
+                    <p>2. The second parameter (<span class="text-danger clsn">6</span> - optional) must be an int from 1 to 7, representing the id of the skin you would like for the lock page.</p>
+                    <p>3. The third parameter (<span class="text-danger clsn">$options</span> - optional) must be an array, representing the list of advanced options for the script.</p>
+                    <hr>
+                    <h2>sha512 Encrypted password</h2>
+                    <p>If you think that your php sources might be unsafe, you can easily enable the sha512 mode, and type an encoded password. Here's an example:</p>
+<pre class="prettyprint linenums lang-php">
+&#x3C;?php
+    include&#x27;easy-lock.php&#x27;;
+    $options = array(
+        &#x22;sha512&#x22; =&#x3E; true
+    );
+    lock(&#x22;d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db&#x22;, 1, $options);
+?&#x3E;
+</pre>
+                    <p>This code will lock the page with the password <span class="text-danger clsn">1234</span>, as the <span class="text-danger clsn">d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db</span> is the sha512 encryption for <span class="text-danger clsn">1234</span></p>
+                    <p>(You can find tools to encode the password with SHA512 on the internet, just like: <a href="http://www.miniwebtool.com/sha512-hash-generator/">this one</a>.)</p>
+                    <hr>
+                    <h1>2. List of all options</h1>
+                    <h2>2.1 sha512 mode</h2>
+                    <pre class="prettyprint linenums lang-php">"sha512" => (true/false)</pre>
+                    <p>Default value: <span class="text-danger clsn">false</span><br>Data type: <span class="text-danger clsn">boolean</span></p>
+                    <p>This variable enables/disables the sha512 mode.</p>
+                    <h2>2.2 Number of tries</h2>
+                    <pre class="prettyprint linenums lang-php">"tries" => 20</pre>
+                    <p>Default value: <span class="text-danger clsn">30</span><br>Data type: <span class="text-danger clsn">int</span></p>
+                    <p>This specifies the number of times a user can try to enter the password. When reaching the max number of tries, he will get a message telling him he is blocked!<br>For infinite, just type <span class="text-danger clsn">999999</span>.</p>
+                    <h2>2.3 IP bypass</h2>
+                    <pre class="prettyprint linenums lang-php">&#x22;bypass&#x22; =&#x3E; array(&#x27;111.222.111.100&#x27;, &#x27;111.222.111.100&#x27;)</pre>
+                    <p>Default value: <span class="text-danger clsn">-</span><br>Data type: <span class="text-danger clsn">array(strings)</span></p>
+                    <p>This specifies the list of IPs that won't be asked to login.</p>
+                    <h2>2.4 IP denying</h2>
+                    <pre class="prettyprint linenums lang-php">&#x22;deny&#x22; =&#x3E; array(&#x27;111.222.111.100&#x27;)</pre>
+                    <p>Default value: <span class="text-danger clsn">-</span><br>Data type: <span class="text-danger clsn">array(strings)</span></p>
+                    <p>This specifies the list of IPs that won't be able to enter any password, and will see the block screen.</p>
+                    <h2>2.5 Skin</h2>
+                    <pre class="prettyprint linenums lang-php">&#x22;skin&#x22; =&#x3E; 4</pre>
+                    <p>Default value: <span class="text-danger clsn">2</span><br>Data type: <span class="text-danger clsn">int</span></p>
+                    <p>This specifies the skin ID. This will change the skin id set as the second parameter of the function.</p>
+                    <h2>2.6 Password</h2>
+                    <pre class="prettyprint linenums lang-php">&#x22;password&#x22; =&#x3E; &#x27;pass&#x27;</pre>
+                    <p>or</p>
+                    <pre class="prettyprint linenums lang-php">&#x22;password&#x22; =&#x3E; array(&#x27;pass1&#x27;, &#x27;pass2&#x27;)</pre>
+                    <p>Default value: <span class="text-danger clsn">-</span><br>Data type: <span class="text-danger clsn">string</span> or <span class="text-danger clsn">array of strings</span></p>
+                    <p>This specifies the password. This will will change the password set as the first parameter of the function.</p>
+                    <h2>2.7 Remember me mode</h2>
+                    <pre class="prettyprint linenums lang-php">"remember_me" => (true/false)</pre>
+                    <p>Default value: <span class="text-danger clsn">false</span><br>Data type: <span class="text-danger clsn">boolean</span></p>
+                    <p>This variable sets if the password should be saved for multiple days so that the user won't need to type it again. It will last for 30 days. A cookie with an sha512 encoded version of the password will be set and used to keep the user logged in.</p>
+                    <hr>
+                    <h2>How to sign out</h2>
+                    <p>For signing out the user from the page (deleting the session and the remember me cookie), you will just need to pass a GET parameter called <span class="text-danger clsn">easylock</span> with the <span class="text-danger clsn">logout</span> text in the link just like this: </p>
+                    <pre>http://site.com/path/page.php?<span class="text-danger clsn">easylock=logout</span></pre>
+                    <p>Or: </p>
+                    <pre>http://site.com/path/page.php?other_param=test&<span class="text-danger clsn">easylock=logout</span></pre>
+                    <p>So, you'd just need to set a link in the page that points to the page including that GET parameter.</p>
+                    <p>After signing out, the script will redirect the user to the page without the GET parameters from the link.</p>
+                    <p>This can manually be changed by editing the line 81, setting the Header Location to another link.</p>
+                    <hr>
+                    <h2>Simple Example with multiple options</h2>
+<pre class="prettyprint linenums lang-php">
+&#x3C;?php
+    include&#x27;easy-lock.php&#x27;;
+    $options = array(
+        &#x22;tries&#x22; =&#x3E; 12,
+        &#x22;skin&#x22; =&#x3E; 4,
+        &#x22;deny&#x22; =&#x3E; array(&#x27;111.222.111.100&#x27;)
+    );
+    lock(&#x22;1234&#x22;, 2, $options);
+?&#x3E;
+</pre>
+                    <p>This will select the skin <span class="text-danger clsn">4</span>, will set a maximum of <span class="text-danger clsn">12</span> attempts, and will block any attempt from the IP <span class="text-danger clsn">111.222.111.100</span>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <footer>
+                <hr>
+                <p class="float-left">&copy; artur99 2018</p>
+                <p class="float-right">PHP Easy-Lock</p>
+            </footer>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="assets/js/prettify.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            (function (jQuery) {
+                jQuery(document).ready(function () {
+                    prettyPrint();
+                });
+            }(jQuery));
+        </script>
+    </body>
+</html>
